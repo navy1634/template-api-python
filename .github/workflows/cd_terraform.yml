@@ -1,13 +1,14 @@
 name: CD for Infrastructure
 on:
-  push:
-    branches:
-      - main
-      - develop
-    paths:
-      - "terraform/**"
-      - ".github/workflows/cd_terraform.yml"
-      - "!terraform/README.md"
+  # push:
+  #   branches:
+  #     - main
+  #     - develop
+  #   paths:
+  #     - "terraform/**"
+  #     - ".github/workflows/cd_terraform.yml"
+  #     - "!terraform/README.md"
+  workflow_dispatch:
 
 env:
   env: ${{ github.ref == 'refs/heads/main' && 'prd' || 'dev' }}

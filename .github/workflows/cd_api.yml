@@ -1,13 +1,15 @@
 name: Deploy API to AWS ECR
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "api/**"
-      - ".github/workflows/cd_api.yml"
-      - "!api/README.md"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "!**"
+  #     - "api/**"
+  #     - ".github/workflows/cd_api.yml"
+  #     - "!api/README.md"
+  workflow_dispatch:
 
 env:
   AWS_PROFILE_ACCOUNT: default
@@ -55,6 +57,7 @@ jobs:
           aws ecs describe-task-definition \
             --task-definition ${{ env.project_name }}-api-task-definition \
             --query taskDefinition \
+            | jq 'del(.compatibilities, .taskDefinitionArn, .requiresAttributes, .revision, .status, .registeredAt, .registeredBy)' \
             > ecs-task-def.json
 
       - name: update ECS service
